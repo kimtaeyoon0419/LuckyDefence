@@ -7,5 +7,5 @@ using UnityEngine;
 
 public class UnitSlot : MonoBehaviour
 {
-    
+    [SerializeField] public GameObject currentUnit;
 }
