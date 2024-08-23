@@ -50,19 +50,32 @@ public class SpawnManager : MonoBehaviour
 
     public void SpawnUnit()
     {
-        foreach(UnitSlot slot in unitSlots)
+        if (unitSlots.Count <= 0)
         {
-            if(slot.currentUnit == null)
+            return;
+        }
+
+        foreach (UnitSlot slot in unitSlots)
+        {
+            if (slot.currentUnit == null)
             {
                 unitNullSlot.Add(slot);
             }
         }
 
+        // unitNullSlot이 비어 있는지 확인
+        if (unitNullSlot.Count <= 0)
+        {
+            unitNullSlot.Clear(); // 비어 있을 경우, 리스트를 비워준 후 리턴
+            return;
+        }
+
         int unitIndex = Random.Range(0, UnitManager.Instance.units.Count);
         int slotIndex = Random.Range(0, unitNullSlot.Count);
 
-        unitNullSlot[slotIndex].currentUnit = Instantiate(UnitManager.Instance.units[unitIndex], unitNullSlot[slotIndex].transform.position, Quaternion.identity);
+        unitNullSlot[slotIndex].currentUnit = Instantiate(UnitManager.Instance.units[unitIndex].unitObject, unitNullSlot[slotIndex].transform.position, Quaternion.identity);
 
         unitNullSlot.Clear();
     }
+
 }

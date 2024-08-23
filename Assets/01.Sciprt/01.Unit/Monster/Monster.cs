@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using UnityEditor;
 using UnityEngine;
 
 public class Monster : MonoBehaviour
@@ -9,12 +11,19 @@ public class Monster : MonoBehaviour
     private int wayIndex = 0;
 
     [Header("Stat")]
-    public float speed;
-    public float stoppingDistance = 0.1f;  // 목표 지점에 도달했다고 간주할 거리
+    [SerializeField] public float maxHp;
+    [SerializeField] private float currentHp;
 
+    [SerializeField]public float speed;
+    [SerializeField]public float stoppingDistance = 0.1f;  // 목표 지점에 도달했다고 간주할 거리
+
+    [SerializeField] private Canvas canvas;
+    
     private void OnEnable()
     {
         StageManager.Instance.MonsterCountPlus();
+        canvas = GetComponentInChildren<Canvas>();
+        currentHp = maxHp;
     }
 
     private void OnDestroy()
@@ -57,5 +66,23 @@ public class Monster : MonoBehaviour
         {
             wayPoints[i] = ways[i];
         }
+    }
+
+    public void TakeDamage(float damage)
+    {
+        currentHp -= damage;
+
+        TakeDamageText takeDamageText = ObjectPool.Instance.SpawnFromPool("DamageText", transform.position).GetComponent<TakeDamageText>();
+        takeDamageText.gameObject.transform.SetParent(canvas.transform);
+        takeDamageText.SetText(Mathf.FloorToInt(damage));
+        if(currentHp <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        Destroy(gameObject);
     }
 }
