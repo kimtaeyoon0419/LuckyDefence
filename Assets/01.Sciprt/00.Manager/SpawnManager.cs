@@ -1,13 +1,17 @@
 // # System
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 
 // # Unity
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 
 public class SpawnManager : MonoBehaviour
 {
+    public static SpawnManager Instance;
+
     [Header("Tilemap Settings")]
     [SerializeField] private Tilemap unitTilemap; // 타일맵 참조
 
@@ -20,9 +24,26 @@ public class SpawnManager : MonoBehaviour
     [Header("NullSlot")]
     List<UnitSlot> unitNullSlot = new List<UnitSlot>();
 
+    [Header("SpawnCost")]
+    [SerializeField] private int havePoint;
+    [SerializeField] private TextMeshProUGUI havePoint_Text;
+    [SerializeField] private int spawnPoint;
+    [SerializeField] private TextMeshProUGUI spawnPoint_Text;
+    [SerializeField] private int spawnLevel;
+    [SerializeField] private float currentSpawnLevelExp;
+    [SerializeField] private float maxSpawnLevelExp;
+    [SerializeField] private TextMeshProUGUI spawnLevel_Text;
+    [SerializeField] private Slider spawnLevelExpBar;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     private void Start()
     {
         GenerateEmptyObjects();
+        SetSpawnUI();
     }
 
     private void GenerateEmptyObjects()
@@ -50,7 +71,7 @@ public class SpawnManager : MonoBehaviour
 
     public void SpawnUnit()
     {
-        if (unitSlots.Count <= 0)
+        if (unitSlots.Count <= 0 || havePoint < spawnPoint)
         {
             return;
         }
@@ -75,7 +96,31 @@ public class SpawnManager : MonoBehaviour
 
         unitNullSlot[slotIndex].currentUnit = Instantiate(UnitManager.Instance.units[unitIndex].unitObject, unitNullSlot[slotIndex].transform.position, Quaternion.identity);
 
+        havePoint -= spawnPoint;
+        currentSpawnLevelExp += 10;
+        if(currentSpawnLevelExp >= maxSpawnLevelExp)
+        {
+            float leftoverExp = currentSpawnLevelExp - maxSpawnLevelExp;
+            currentSpawnLevelExp = 0;
+            currentSpawnLevelExp += leftoverExp;
+            spawnLevel++;
+        }
+
+        SetSpawnUI();
+
         unitNullSlot.Clear();
     }
 
+    private void SetSpawnUI()
+    {
+        spawnLevel_Text.text = "소환레벨 : " + spawnLevel.ToString();
+        havePoint_Text.text = "Sp : " + havePoint.ToString();
+        spawnPoint_Text.text = "SpCost : " + spawnPoint.ToString();
+        spawnLevelExpBar.value = currentSpawnLevelExp / maxSpawnLevelExp;
+    }
+
+    public void GetSp(int spValue)
+    {
+        havePoint += spValue;
+    }
 }
