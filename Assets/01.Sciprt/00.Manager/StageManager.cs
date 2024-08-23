@@ -10,10 +10,15 @@ public class StageManager : MonoBehaviour
 {
     public static StageManager Instance;
 
+    [Header("CurrentStage")]
+    [SerializeField] private int currentStage;
+    [SerializeField] private TextMeshProUGUI currentStageText;
+
     [Header("MonsterCount")]
     [SerializeField] private int monsterCount;
     [SerializeField] private TextMeshProUGUI monsterCountText;
-
+    [SerializeField] private int maxMonsterCount;
+ 
     [Header("StageTime")]
     [SerializeField] private float stageTime;
     [SerializeField] private float curStageTime = 0;
@@ -26,7 +31,7 @@ public class StageManager : MonoBehaviour
 
     private void Start()
     {
-        curStageTime = stageTime;
+        curStageTime = 3f;
     }
 
     private void Update()
@@ -40,22 +45,26 @@ public class StageManager : MonoBehaviour
         {
             MonsterSpawnManager.Instance.StartSpawnMonster(20);
             curStageTime = stageTime;
+            currentStage++;
+            currentStageText.text = "현재 스테이지 : " + currentStage;
         }
     }
 
     public void MonsterCountPlus()
     {
         monsterCount++;
-        monsterCountText.text = "몬스터 수 : " + monsterCount;
+        monsterCountText.text = "몬스터 수 : " + monsterCount + " / " + maxMonsterCount;
     }
 
     public void MonsterCountMinus()
     {
         monsterCount--;
+        
         if(monsterCount <= 0 )
         {
             monsterCount = 0;
         }
-        monsterCountText.text = "몬스터 수 : " + monsterCount;
+
+        monsterCountText.text = "몬스터 수 : " + monsterCount + " / " + maxMonsterCount;
     }
 }

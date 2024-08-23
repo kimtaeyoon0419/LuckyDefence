@@ -212,7 +212,7 @@ MonoBehaviour:
   monster: {fileID: 2728153097655460776, guid: 18c733377d84bbc449147e8bc59f0d1f, type: 3}
   spawnPos: {fileID: 1440423799}
   spawnTime: 1
-  spawnDelay: 0.5
+  spawnDelay: 0.2
 --- !u!1 &60958092
 GameObject:
   m_ObjectHideFlags: 0
@@ -1392,9 +1392,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 736cf2d0bcfe7734e8313082e500042b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentStage: 0
+  currentStageText: {fileID: 2042969303}
   monsterCount: 0
   monsterCountText: {fileID: 1801917893}
-  stageTime: 20
+  maxMonsterCount: 60
+  stageTime: 10
   curStageTime: 0
   stageTimeText: {fileID: 336970196}
 --- !u!1 &309768036
@@ -7146,8 +7149,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 180, y: 757}
-  m_SizeDelta: {x: 260.744, y: 74.582}
+  m_AnchoredPosition: {x: 172, y: 757}
+  m_SizeDelta: {x: 382.94, y: 74.582}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1801917893
 MonoBehaviour:
@@ -7169,7 +7172,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uBAAC\uC2A4\uD130 \uC218 : 0"
+  m_text: "\uBAAC\uC2A4\uD130 \uC218 : 0 / 60"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 02d9aa98dafe18e48a4fa53d68c42a23, type: 2}
   m_sharedMaterial: {fileID: -5440341948532327789, guid: 02d9aa98dafe18e48a4fa53d68c42a23, type: 2}
@@ -7870,7 +7873,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -146.4391, y: 757}
+  m_AnchoredPosition: {x: -200.43915, y: 756.9999}
   m_SizeDelta: {x: 283.622, y: 74.582}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2042969303

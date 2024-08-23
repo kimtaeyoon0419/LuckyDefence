@@ -17,6 +17,9 @@ public class MonsterSpawnManager : MonoBehaviour
     [SerializeField] private Transform spawnPos;
     [SerializeField] private float spawnTime;
     private float curSpawnTime = 0f;
+    [SerializeField] private List<Monster> enemyList;
+    public List<Monster> EnemyList => enemyList;
+    private int spawnCount = 0;
 
     [Header("SpawnDelay")]
     [SerializeField] private float spawnDelay;
@@ -25,11 +28,20 @@ public class MonsterSpawnManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        enemyList = new List<Monster>();
     }
 
     private void Start()
     {
         waitSpawnDelay = new WaitForSeconds(spawnDelay);
+    }
+
+    private void Update()
+    {
+        if(enemyList.Count <= 0)
+        {
+            spawnCount = 0;
+        }
     }
 
     public void StartSpawnMonster(int index)
@@ -43,9 +55,21 @@ public class MonsterSpawnManager : MonoBehaviour
 
         while (spawnCount < index)
         {
-            Instantiate(monster, spawnPos.position, Quaternion.identity).GetComponent<Monster>().SetWayPoint(wayPoints);
+            GameObject clone = Instantiate(monster, spawnPos.position, Quaternion.identity);
+            Monster enemy = clone.GetComponent<Monster>();
+            enemy.Setup(this, wayPoints, spawnCount);
+            spawnCount++;
+            
+            enemyList.Add(enemy);
+
             spawnCount++;
             yield return waitSpawnDelay;
         }
+    }
+
+    public void DestroyEnemy(Monster enemy)
+    {
+        enemyList.Remove(enemy);
+        Destroy(enemy.gameObject);
     }
 }

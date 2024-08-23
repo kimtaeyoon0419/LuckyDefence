@@ -19,6 +19,10 @@ public class Monster : MonoBehaviour
 
     [SerializeField] private Canvas canvas;
     
+    private MonsterSpawnManager spawnManager;
+
+    [SerializeField] public int spawnOrder;
+
     private void OnEnable()
     {
         StageManager.Instance.MonsterCountPlus();
@@ -59,9 +63,12 @@ public class Monster : MonoBehaviour
         }
     }
 
-    public void SetWayPoint(Transform[] ways)
+    public void Setup(MonsterSpawnManager monsterSpawnManager, Transform[] ways, int spawnCount)
     {
+        spawnManager = monsterSpawnManager;
         wayPoints = new Transform[ways.Length];
+        spawnOrder = spawnCount;
+
         for (int i = 0; i < ways.Length; i++)
         {
             wayPoints[i] = ways[i];
@@ -84,6 +91,6 @@ public class Monster : MonoBehaviour
 
     private void Die()
     {
-        Destroy(gameObject);
+        spawnManager.DestroyEnemy(this);
     }
 }

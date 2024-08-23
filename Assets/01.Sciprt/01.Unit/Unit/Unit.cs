@@ -51,16 +51,26 @@ public abstract class Unit : MonoBehaviour
 
     protected Monster FindEnemy()
     {
-        Collider2D collider = Physics2D.OverlapCircle(transform.position, attackRange, enemyLayer);
-        Debug.Log(collider != null ? "Collider found!" : "Collider is null");
+        Monster oldestEnemy = null;
+        int oldestSpawnOrder = int.MaxValue;
 
-        if (collider != null)
+        foreach (Monster enemy in MonsterSpawnManager.Instance.EnemyList)
         {
-            Monster monster = collider.GetComponent<Monster>();
-            return monster;
+            float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
+
+            // 사거리 내에 있는지 확인
+            if (distanceToEnemy <= attackRange)
+            {
+                // 가장 먼저 스폰된 적을 선택
+                if (enemy.spawnOrder < oldestSpawnOrder)
+                {
+                    oldestSpawnOrder = enemy.spawnOrder;
+                    oldestEnemy = enemy;
+                }
+            }
         }
 
-        return null;
+        return oldestEnemy;
     }
 
     protected abstract void Attack();
