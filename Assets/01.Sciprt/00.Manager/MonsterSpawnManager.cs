@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class MonsterSpawnManager : MonoBehaviour
 {
+    public static MonsterSpawnManager Instance;
+
     [Header("Waypoints")]
     [SerializeField] private Transform[] wayPoints;
 
@@ -16,17 +18,34 @@ public class MonsterSpawnManager : MonoBehaviour
     [SerializeField] private float spawnTime;
     private float curSpawnTime = 0f;
 
-    private void Update()
+    [Header("SpawnDelay")]
+    [SerializeField] private float spawnDelay;
+    private WaitForSeconds waitSpawnDelay;
+
+    private void Awake()
     {
-        if (0 >= curSpawnTime)
+        Instance = this;
+    }
+
+    private void Start()
+    {
+        waitSpawnDelay = new WaitForSeconds(spawnDelay);
+    }
+
+    public void StartSpawnMonster(int index)
+    {
+        StartCoroutine(Co_Spawn(index));
+    }
+
+    IEnumerator Co_Spawn(int index)
+    {
+        int spawnCount = 0;
+
+        while (spawnCount < index)
         {
-            curSpawnTime = spawnTime;
             Instantiate(monster, spawnPos.position, Quaternion.identity).GetComponent<Monster>().SetWayPoint(wayPoints);
-        }
-        else if (spawnTime >= curSpawnTime)
-        {
-            //Debug.Log("∞®º“¡ﬂ");
-            curSpawnTime -= Time.deltaTime;
+            spawnCount++;
+            yield return waitSpawnDelay;
         }
     }
 }

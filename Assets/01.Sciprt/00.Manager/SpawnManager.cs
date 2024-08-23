@@ -122,5 +122,6 @@ public class SpawnManager : MonoBehaviour
     public void GetSp(int spValue)
     {
         havePoint += spValue;
+        SetSpawnUI();
     }
 }
