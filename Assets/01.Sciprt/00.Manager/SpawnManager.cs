@@ -7,6 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class SpawnManager : MonoBehaviour
 {
@@ -34,6 +35,7 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private float maxSpawnLevelExp;
     [SerializeField] private TextMeshProUGUI spawnLevel_Text;
     [SerializeField] private Slider spawnLevelExpBar;
+    [SerializeField] private Ease ease;
 
     private void Awake()
     {
@@ -122,6 +124,14 @@ public class SpawnManager : MonoBehaviour
     public void GetSp(int spValue)
     {
         havePoint += spValue;
+        StartCoroutine(SpTextSizeAnim());
         SetSpawnUI();
+    }
+
+    IEnumerator SpTextSizeAnim()
+    {
+        havePoint_Text.transform.DOScale(1.2f, 0.1f).SetEase(ease);
+        yield return new WaitForSeconds(0.1f);
+        havePoint_Text.transform.DOScale(1, 0.1f).SetEase(ease);
     }
 }
