@@ -97,10 +97,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9e01a9e8253943418a4b35995f9876f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackDamage: 1
-  attackSpeed: 0.2
+  unitName: 
+  attackDamage: 0
+  attackSpeed: 0
   currentAttackSpeed: 0
-  attackRange: 1.5
+  attackRange: 0
+  statData: {fileID: 11400000, guid: 9c1ebf6e28fa69846ab0d1e927ae3f5d, type: 2}
   currentEnemy: {fileID: 0}
   enemyLayer:
     serializedVersion: 2

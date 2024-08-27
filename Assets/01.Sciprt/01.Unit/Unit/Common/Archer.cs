@@ -5,7 +5,10 @@ using System.Collections.Generic;
 // # Unity
 using UnityEngine;
 
-public class Archer : LongRangeUnit
+namespace LuckyDefence.Unit
 {
+    public class Archer : LongRangeUnit
+    {
 
+    }
 }
