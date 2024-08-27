@@ -4,21 +4,23 @@ using System.Collections.Generic;
 
 // # Unity
 using UnityEngine;
-
-public class LongRangeUnit : Unit
+namespace LuckyDefence.Unit
 {
-    [Header("Attack")]
-    private bool isFire;
-    [SerializeField] private GameObject bulletPrefab;
-
-    protected override void Attack()
+    public class LongRangeUnit : Unit
     {
-        Monster targetMonster = currentEnemy;
+        [Header("Attack")]
+        private bool isFire;
+        [SerializeField] private GameObject bulletPrefab;
 
-        if (targetMonster != null)
+        protected override void Attack()
         {
-            var unitBulltetObject = ObjectPool.Instance.SpawnFromPool("UnitBullet", transform.position);
-            unitBulltetObject.GetComponent<Bullet>().SetupBullet(targetMonster, attackDamage);
+            Monster targetMonster = currentEnemy;
+
+            if (targetMonster != null)
+            {
+                var unitBulltetObject = ObjectPool.Instance.SpawnFromPool("UnitBullet", transform.position);
+                unitBulltetObject.GetComponent<Bullet>().SetupBullet(targetMonster, attackDamage);
+            }
         }
     }
 }
