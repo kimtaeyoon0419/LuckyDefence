@@ -22,7 +22,7 @@ namespace LuckyDefence.Unit
         [SerializeField] protected Monster currentEnemy;
         [SerializeField] protected LayerMask enemyLayer;
 
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
             InitStat();
         }

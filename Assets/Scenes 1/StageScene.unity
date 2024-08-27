@@ -7646,7 +7646,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   units:
   - unitName: Archer
-    unitObject: {fileID: 4743908503287649910, guid: 68c37b8b97bb0a8468e6f2717e8ea25b, type: 3}
+    unitObject: {fileID: 1063409528044604348, guid: e356f7e4eb673954a8b325eb068ead4a, type: 3}
 --- !u!1 &1916455295
 GameObject:
   m_ObjectHideFlags: 0
