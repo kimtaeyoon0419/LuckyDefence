@@ -10,6 +10,9 @@ namespace LuckyDefence.Unit
 {
     public abstract class Unit : MonoBehaviour
     {
+        [Header("Component")]
+        protected Animator animator;
+
         [Header("Stat")]
         [SerializeField] protected string unitName;
         [SerializeField] protected Stat statData;
@@ -22,8 +25,15 @@ namespace LuckyDefence.Unit
         [SerializeField] protected Monster currentEnemy;
         [SerializeField] protected LayerMask enemyLayer;
 
+        [Header("CurrentState")]
+        [SerializeField] protected bool isAttack = false;
+
+        [Header("Animation")]
+        protected readonly int hashAttack = Animator.StringToHash("Attack");
+
         protected virtual void OnEnable()
         {
+            animator = GetComponentInChildren<Animator>();
             InitStat();
         }
 
@@ -33,7 +43,7 @@ namespace LuckyDefence.Unit
             SetAttackSpeed();
         }
 
-        private void OnDrawGizmos()
+        protected virtual void OnDrawGizmos()
         {
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(transform.position, attackRange);
@@ -69,6 +79,11 @@ namespace LuckyDefence.Unit
 
         protected Monster FindEnemy()
         {
+            if(MonsterSpawnManager.Instance.EnemyList.Count <= 0)
+            {
+                return null;
+            }
+
             Monster oldestEnemy = null;
             int oldestSpawnOrder = int.MaxValue;
 
@@ -92,5 +107,12 @@ namespace LuckyDefence.Unit
         }
 
         protected abstract void Attack();
+
+        protected IEnumerator Co_WaitCurrentAnim()
+        {
+            yield return null;
+            yield return new WaitForSeconds(animator.GetCurrentAnimatorClipInfo(0).Length);
+            isAttack = false;
+        }
     }
 }

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a89fef7297e036498ef48ab702b6ae0, type: 3}
   m_Name: 00.Archer
   m_EditorClassIdentifier: 
-  UnitName: Archer
-  attackSpeed: 0.2
+  unitName: 
+  attackSpeed: 0.5
   damage: 1
   attackRange: 1.5
   charRating: 0
