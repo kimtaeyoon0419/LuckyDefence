@@ -13,6 +13,8 @@ namespace LuckyDefence.Unit
 
         protected override void Attack()
         {
+            base.Attack();
+
             Monster targetMonster = currentEnemy;
 
             if (targetMonster != null && isAttack == false)

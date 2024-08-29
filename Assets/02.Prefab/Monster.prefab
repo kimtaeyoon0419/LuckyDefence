@@ -203,8 +203,9 @@ MonoBehaviour:
   maxHp: 10
   currentHp: 0
   speed: 2
-  stoppingDistance: 0.1
+  stoppingDistance: 0.05
   canvas: {fileID: 0}
+  spawnOrder: 0
 --- !u!61 &4538722043465996667
 BoxCollider2D:
   m_ObjectHideFlags: 0

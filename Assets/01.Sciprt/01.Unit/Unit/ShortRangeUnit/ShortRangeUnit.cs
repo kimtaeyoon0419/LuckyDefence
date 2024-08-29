@@ -12,14 +12,16 @@ namespace LuckyDefence.Unit
         [SerializeField] private GameObject attackPos;
         [SerializeField] private Vector2 attackBoxSize;
 
-        //protected override void OnDrawGizmos()
-        //{
-        //    Gizmos.color = Color.red;
-        //    Gizmos.DrawWireCube(attackPos.transform.position, attackBoxSize); 
-        //}
+        protected override void OnDrawGizmos()
+        {
+            base.OnDrawGizmos();
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireCube(attackPos.transform.position, attackBoxSize);
+        }
 
         protected override void Attack()
         {
+            base.Attack();
             Monster targetMonster = currentEnemy;
 
             if (targetMonster != null && isAttack == false)

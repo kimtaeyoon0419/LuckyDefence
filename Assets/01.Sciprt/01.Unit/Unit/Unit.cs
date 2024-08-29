@@ -106,7 +106,22 @@ namespace LuckyDefence.Unit
             return oldestEnemy;
         }
 
-        protected abstract void Attack();
+        protected virtual void Attack()
+        {
+            Flip();
+        }
+
+        private void Flip()
+        {
+            if (currentEnemy.transform.position.x > transform.position.x)
+            {
+                transform.rotation = Quaternion.Euler(0, 180, 0);
+            }
+            else if (currentEnemy.transform.position.x < transform.position.x)
+            {
+                transform.rotation = Quaternion.Euler(0, 0, 0);
+            }
+        }
 
         protected IEnumerator Co_WaitCurrentAnim()
         {
