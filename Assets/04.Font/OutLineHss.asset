@@ -114,7 +114,7 @@ Material:
     - _OutlineSoftness: 0
     - _OutlineUVSpeedX: 0
     - _OutlineUVSpeedY: 0
-    - _OutlineWidth: 0
+    - _OutlineWidth: 0.289
     - _PerspectiveFilter: 0.875
     - _Reflectivity: 10
     - _ScaleRatioA: 0.9
@@ -162,11 +162,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
-  m_Name: HSSaemaul-Regular (1) SDF
+  m_Name: OutLineHss
   m_EditorClassIdentifier: 
-  hashCode: -1705699345
+  hashCode: 1507574504
   material: {fileID: -5440341948532327789}
-  materialHashCode: 1798577391
+  materialHashCode: -1398358968
   m_Version: 1.1.0
   m_SourceFontFileGUID: ad60f19a87c5d0a40876f08931593785
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: ad60f19a87c5d0a40876f08931593785, type: 3}

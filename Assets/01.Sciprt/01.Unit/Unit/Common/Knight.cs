@@ -8,6 +8,10 @@ namespace LuckyDefence.Unit
 {
     public class Knight : ShortRangeUnit
     {
-
+        protected override void Attack()
+        {
+            base.Attack();
+            AudioManager.Instance.StartSfx("Sword");
+        }
     }
 }
