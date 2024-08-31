@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
+using EasyTransition;
 
 public class TitleUIManager : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class TitleUIManager : MonoBehaviour
     [SerializeField] private Ease floatEase = Ease.InOutSine; // 부드러운 가속/감속을 위한 Ease 설정
     [SerializeField] private Ease initialEase; // 초기 튐 애니메이션을 위한 Ease 설정
     [SerializeField] private TextMeshProUGUI touchToStartText;
+    [SerializeField] private bool isTitleDownEnd = false;
+    [SerializeField] private TransitionSettings transitionSettings;
 
     private void Start()
     {
@@ -28,14 +31,15 @@ public class TitleUIManager : MonoBehaviour
                 .SetLoops(-1, LoopType.Yoyo); // 무한 반복
             touchToStartText.gameObject.SetActive(true);
             touchToStartText.DOFade(1, 1).SetLoops(-1, LoopType.Yoyo);
+            isTitleDownEnd = true;
         });
     }
 
     private void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && isTitleDownEnd)
         {
-            SceneManager.LoadScene("StageScene");
+            TransitionManager.Instance().Transition("StageScene", transitionSettings, 0);
         }
     }
 }

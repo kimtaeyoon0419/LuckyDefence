@@ -84,7 +84,7 @@ public class Monster : MonoBehaviour
         takeDamageText.SetText(Mathf.FloorToInt(damage));
         if(currentHp <= 0)
         {
-            SpawnManager.Instance.GetSp(5);
+            UnitSlotManager.Instance.GetSp(5);
             Die();
         }
     }

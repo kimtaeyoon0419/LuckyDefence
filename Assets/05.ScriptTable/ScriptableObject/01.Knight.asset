@@ -17,3 +17,4 @@ MonoBehaviour:
   damage: 2
   attackRange: 0.6
   charRating: 0
+  moveSpeed: 3

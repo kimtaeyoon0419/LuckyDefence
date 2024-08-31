@@ -8,10 +8,11 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 using DG.Tweening;
+using LuckyDefence.Unit;
 
-public class SpawnManager : MonoBehaviour
+public class UnitSlotManager : MonoBehaviour
 {
-    public static SpawnManager Instance;
+    public static UnitSlotManager Instance;
 
     [Header("Tilemap Settings")]
     [SerializeField] private Tilemap unitTilemap; // 타일맵 참조
@@ -37,6 +38,11 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private Slider spawnLevelExpBar;
     [SerializeField] private Ease ease;
 
+    [Header("SelectSlot")]
+    [SerializeField] private LayerMask slotLayer;
+    [SerializeField] private UnitSlot startSlot;
+    [SerializeField] private UnitSlot changeSlot;
+
     private void Awake()
     {
         Instance = this;
@@ -46,6 +52,12 @@ public class SpawnManager : MonoBehaviour
     {
         GenerateEmptyObjects();
         SetSpawnUI();
+    }
+
+    private void Update()
+    {
+        ClickSelectSlot();
+        EndDragSlot();
     }
 
     private void GenerateEmptyObjects()
@@ -93,10 +105,10 @@ public class SpawnManager : MonoBehaviour
             return;
         }
 
-        int unitIndex = Random.Range(0, UnitManager.Instance.units.Count);
+        int unitIndex = Random.Range(0, UnitDataManager.Instance.units.Count);
         int slotIndex = Random.Range(0, unitNullSlot.Count);
 
-        unitNullSlot[slotIndex].currentUnit = Instantiate(UnitManager.Instance.units[unitIndex].unitObject, unitNullSlot[slotIndex].transform.position, Quaternion.identity);
+        unitNullSlot[slotIndex].currentUnit = Instantiate(UnitDataManager.Instance.units[unitIndex].unitObject, unitNullSlot[slotIndex].transform.position, Quaternion.identity);
 
         havePoint -= spawnPoint;
         currentSpawnLevelExp += 10;
@@ -134,4 +146,63 @@ public class SpawnManager : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         havePoint_Text.transform.DOScale(1, 0.1f).SetEase(ease);
     }
+
+    private void ClickSelectSlot()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero, Mathf.Infinity, slotLayer);
+
+            if (hit.collider != null)
+            {
+                UnitSlot slot = hit.collider.GetComponent<UnitSlot>();
+                if (slot != null)
+                {
+                    startSlot = slot;
+                    Debug.Log("슬롯 선택됨: " + slot.gameObject.name);
+                }
+            }
+        }
+    }
+
+
+    private void EndDragSlot()
+    {
+        if (Input.GetMouseButtonUp(0) && startSlot != null)
+        {
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero, Mathf.Infinity, slotLayer);
+
+            if (hit.collider != null)
+            {
+                UnitSlot endSlot = hit.collider.GetComponent<UnitSlot>();
+                if (endSlot != null && endSlot != startSlot)
+                {
+                    SwapUnits(startSlot, endSlot);
+                    Debug.Log("드래그 종료 슬롯 선택됨: " + endSlot.gameObject.name);
+                }
+            }
+
+            startSlot = null; // 드래그 작업 초기화
+        }
+    }
+
+    private void SwapUnits(UnitSlot slot1, UnitSlot slot2)
+    {
+        GameObject tempUnit = slot1.currentUnit;
+        slot1.currentUnit = slot2.currentUnit;
+        slot2.currentUnit = tempUnit;
+
+        if (slot1.currentUnit != null)
+        {
+            slot1.currentUnit.GetComponent<Unit>().MoveSlot(slot1.transform);
+        }
+
+        if (slot2.currentUnit != null)
+        {
+            slot2.currentUnit.GetComponent<Unit>().MoveSlot(slot2.transform);
+        }
+    }
+
 }

@@ -32,12 +32,8 @@ public class Bullet : MonoBehaviour
 
     IEnumerator Co_Attack()
     {
-        while (true)
-        {
-            if(target == null)
-            {
-                StopAllCoroutines();
-            }
+        while (target != null)
+        { 
 
             transform.position = Vector2.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
             yield return null;

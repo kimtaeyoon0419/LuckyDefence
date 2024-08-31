@@ -16,5 +16,6 @@ namespace LuckyDefence.StatData
         public float damage;
         public float attackRange;
         public CharRating charRating;
+        public float moveSpeed;
     }
 }

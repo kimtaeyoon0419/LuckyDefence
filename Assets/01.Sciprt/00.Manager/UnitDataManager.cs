@@ -10,9 +10,9 @@ public class UnitInfo
     public GameObject unitObject;
 }
 
-public class UnitManager : MonoBehaviour
+public class UnitDataManager : MonoBehaviour
 {
-    public static UnitManager Instance;
+    public static UnitDataManager Instance;
 
     [SerializeField] public List<UnitInfo> units;
 

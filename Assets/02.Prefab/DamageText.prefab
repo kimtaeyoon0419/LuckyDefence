@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4177626343420455947}
   - component: {fileID: 4695781298870980958}
   - component: {fileID: -8663667438481237320}
-  m_Layer: 3
+  m_Layer: 5
   m_Name: DamageText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27,7 +27,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1304908981089583342}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -69,7 +69,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Damage
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 02d9aa98dafe18e48a4fa53d68c42a23, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 7672e43584db6ed488d5fca878680f95, type: 2}
   m_sharedMaterial: {fileID: -5440341948532327789, guid: 02d9aa98dafe18e48a4fa53d68c42a23, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -133,7 +133,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &-8663667438481237320

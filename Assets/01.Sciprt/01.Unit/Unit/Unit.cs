@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 // # Unity
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace LuckyDefence.Unit
 {
@@ -20,6 +21,7 @@ namespace LuckyDefence.Unit
         protected float attackSpeed;
         protected float currentAttackSpeed;
         protected float attackRange;
+        protected float moveSpeed;
 
         [Header("CurrentEnemy")]
         [SerializeField] protected Monster currentEnemy;
@@ -30,6 +32,10 @@ namespace LuckyDefence.Unit
 
         [Header("Animation")]
         protected readonly int hashAttack = Animator.StringToHash("Attack");
+        protected readonly int hashMove = Animator.StringToHash("IsMove");
+
+        [Header("Move")]
+        [SerializeField] private bool isMove = false;
 
         protected virtual void OnEnable()
         {
@@ -55,13 +61,14 @@ namespace LuckyDefence.Unit
             attackDamage = statData.damage;
             attackSpeed = statData.attackSpeed;
             attackRange = statData.attackRange;
+            moveSpeed = statData.moveSpeed;
         }
 
         protected void SetAttackSpeed()
         {
             if (currentAttackSpeed <= 0)
             {
-                if (currentEnemy != null)
+                if (currentEnemy != null && !isMove)
                 {
                     Attack();
                     currentAttackSpeed = attackSpeed;
@@ -108,16 +115,16 @@ namespace LuckyDefence.Unit
 
         protected virtual void Attack()
         {
-            Flip();
+            Flip(currentEnemy.gameObject.transform);
         }
 
-        private void Flip()
+        private void Flip(Transform target)
         {
-            if (currentEnemy.transform.position.x > transform.position.x)
+            if (target.transform.position.x > transform.position.x)
             {
                 transform.rotation = Quaternion.Euler(0, 180, 0);
             }
-            else if (currentEnemy.transform.position.x < transform.position.x)
+            else if (target.transform.position.x < transform.position.x)
             {
                 transform.rotation = Quaternion.Euler(0, 0, 0);
             }
@@ -128,6 +135,25 @@ namespace LuckyDefence.Unit
             yield return null;
             yield return new WaitForSeconds(animator.GetCurrentAnimatorClipInfo(0).Length);
             isAttack = false;
+        }
+
+        public void MoveSlot(Transform postion)
+        {
+            isMove = true;
+            Flip(postion);
+            StartCoroutine(Co_MoveSlot(postion));
+        }
+
+        private IEnumerator Co_MoveSlot(Transform pos)
+        {
+            while (transform.position != pos.position)
+            {
+                animator.SetBool(hashMove, isMove);
+                transform.position = Vector2.MoveTowards(transform.position, pos.position, moveSpeed * Time.deltaTime);
+                yield return null;
+            }
+            isMove = false;
+            animator.SetBool(hashMove, isMove);
         }
     }
 }
