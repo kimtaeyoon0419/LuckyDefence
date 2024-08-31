@@ -11,6 +11,8 @@ public class Bullet : MonoBehaviour
     private Monster target;
     [SerializeField] public float attackDamage;
 
+   
+
     public void SetupBullet(Monster target, float attackDamage)
     {
         this.target = target;
@@ -32,6 +34,11 @@ public class Bullet : MonoBehaviour
     {
         while (true)
         {
+            if(target == null)
+            {
+                StopAllCoroutines();
+            }
+
             transform.position = Vector2.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
             yield return null;
 

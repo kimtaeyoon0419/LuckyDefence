@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 public class TitleUIManager : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class TitleUIManager : MonoBehaviour
 
     private void Start()
     {
+        touchToStartText.gameObject.SetActive(false);
         // 로고를 처음에 위로 튀게 만드는 애니메이션
         logoImage.transform.DOMoveY(targetPos.position.y, 1.2f).SetEase(initialEase).OnComplete(() =>
         {
@@ -24,6 +26,16 @@ public class TitleUIManager : MonoBehaviour
             logoImage.transform.DOLocalMoveY(logoImage.transform.localPosition.y + floatDistance, floatDuration)
                 .SetEase(floatEase)
                 .SetLoops(-1, LoopType.Yoyo); // 무한 반복
+            touchToStartText.gameObject.SetActive(true);
+            touchToStartText.DOFade(1, 1).SetLoops(-1, LoopType.Yoyo);
         });
+    }
+
+    private void Update()
+    {
+        if (Input.GetMouseButton(0))
+        {
+            SceneManager.LoadScene("StageScene");
+        }
     }
 }
