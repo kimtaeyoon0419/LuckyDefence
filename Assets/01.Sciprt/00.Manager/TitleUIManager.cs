@@ -21,6 +21,8 @@ public class TitleUIManager : MonoBehaviour
 
     private void Start()
     {
+        AudioManager.Instance.StartBGM("Title");
+
         touchToStartText.gameObject.SetActive(false);
         // 로고를 처음에 위로 튀게 만드는 애니메이션
         logoImage.transform.DOMoveY(targetPos.position.y, 1.2f).SetEase(initialEase).OnComplete(() =>
@@ -40,6 +42,7 @@ public class TitleUIManager : MonoBehaviour
         if (Input.GetMouseButton(0) && isTitleDownEnd)
         {
             TransitionManager.Instance().Transition("StageScene", transitionSettings, 0);
+            AudioManager.Instance.StopBGM();
         }
     }
 }
