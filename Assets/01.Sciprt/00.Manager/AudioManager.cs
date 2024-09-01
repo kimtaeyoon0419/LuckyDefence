@@ -20,7 +20,8 @@ public class AudioManager : MonoBehaviour
     public List<AudioInfo> bgmList;
     public List<AudioInfo> sfxList;
 
-    public AudioSource audioSource;
+    public AudioSource bgmAudioSource;
+    public AudioSource sfxAudioSource;
 
     private Dictionary<string, AudioClip> bgmDict;
     private Dictionary<string, AudioClip> sfxDict;
@@ -36,14 +37,13 @@ public class AudioManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        audioSource = GetComponent<AudioSource>();
+        InitializeDictionaries();
     }
 
     private void Start()
     {
-        InitializeDictionaries();
-        audioSource.loop = true;
-        StartBGM("Stage");
+        bgmAudioSource.loop = true;
+        sfxAudioSource.loop = false;
     }
 
 
@@ -68,8 +68,8 @@ public class AudioManager : MonoBehaviour
     {
         if (bgmDict.TryGetValue(bgmName, out AudioClip clip))
         {
-            audioSource.clip = clip;
-            audioSource.Play();
+            bgmAudioSource.clip = clip;
+            bgmAudioSource.Play();
         }
         else
         {
@@ -81,7 +81,7 @@ public class AudioManager : MonoBehaviour
     {
         if (sfxDict.TryGetValue(sfxName, out AudioClip clip))
         {
-            audioSource.PlayOneShot(clip);
+            sfxAudioSource.PlayOneShot(clip);
         }
         else
         {
@@ -91,19 +91,29 @@ public class AudioManager : MonoBehaviour
 
     public void StopBGM()
     {
-        if (audioSource.isPlaying)
-            audioSource.Stop();
+        if (bgmAudioSource.isPlaying)
+            bgmAudioSource.Stop();
     }
 
     public void PauseBGM()
     {
-        if (audioSource.isPlaying)
-            audioSource.Pause();
+        if (bgmAudioSource.isPlaying)
+            bgmAudioSource.Pause();
     }
 
     public void ResumeBGM()
     {
-        if (!audioSource.isPlaying)
-            audioSource.Play();
+        if (!bgmAudioSource.isPlaying)
+            bgmAudioSource.Play();
+    }
+
+    public void BgmVolume(float volume)
+    {
+        bgmAudioSource.volume = volume;
+    }
+
+    public void SfxVolume(float volume)
+    {
+        sfxAudioSource.volume = volume;
     }
 }
