@@ -346,7 +346,7 @@ MonoBehaviour:
   - {fileID: 247926174}
   monster: {fileID: 2728153097655460776, guid: 18c733377d84bbc449147e8bc59f0d1f, type: 3}
   spawnPos: {fileID: 1440423799}
-  spawnTime: 1
+  spawnTime: 0
   enemyList: []
   spawnDelay: 0.2
 --- !u!1 &60958092
@@ -1488,7 +1488,7 @@ MonoBehaviour:
   monsterCount: 0
   monsterCountText: {fileID: 1801917893}
   maxMonsterCount: 60
-  stageTime: 10
+  stageTime: 100000000
   curStageTime: 0
   stageTimeText: {fileID: 336970196}
 --- !u!1 &309768036
@@ -2803,7 +2803,8 @@ MonoBehaviour:
     audioClip: {fileID: 8300000, guid: 839a602452305e140af542849a67a5a0, type: 3}
   - audioName: Sword
     audioClip: {fileID: 8300000, guid: 42396b2030a049042a6eac5c3b05167c, type: 3}
-  audioSource: {fileID: 0}
+  bgmAudioSource: {fileID: 0}
+  sfxAudioSource: {fileID: 0}
 --- !u!4 &712539160
 Transform:
   m_ObjectHideFlags: 0
@@ -6904,6 +6905,9 @@ MonoBehaviour:
     prarentObject: {fileID: 0}
   - objectName: DamageText
     obj: {fileID: 1304908981089583342, guid: 46c8ba1e5d97b99438f8517fbf9361cd, type: 3}
+    prarentObject: {fileID: 0}
+  - objectName: Monster
+    obj: {fileID: 147088593599739825, guid: cf440c81c6cfa00439b3d82a482529cf, type: 3}
     prarentObject: {fileID: 0}
 --- !u!1 &1583409763
 GameObject:

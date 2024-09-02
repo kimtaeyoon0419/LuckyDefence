@@ -70,8 +70,8 @@ namespace LuckyDefence.Unit
             {
                 if (currentEnemy != null && !isMove)
                 {
-                    Attack();
                     currentAttackSpeed = attackSpeed;
+                    Attack();
                 }
                 else
                 {

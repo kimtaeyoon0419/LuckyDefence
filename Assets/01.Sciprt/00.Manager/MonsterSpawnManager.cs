@@ -55,7 +55,8 @@ public class MonsterSpawnManager : MonoBehaviour
 
         while (spawnCount < index)
         {
-            GameObject clone = Instantiate(monster, spawnPos.position, Quaternion.identity);
+            //GameObject clone = Instantiate(monster, spawnPos.position, Quaternion.identity);
+            GameObject clone = ObjectPool.Instance.SpawnFromPool("Monster", spawnPos.position);
             Monster enemy = clone.GetComponent<Monster>();
             enemy.Setup(this, wayPoints, spawnCount);
             spawnCount++;
@@ -70,6 +71,6 @@ public class MonsterSpawnManager : MonoBehaviour
     public void DestroyEnemy(Monster enemy)
     {
         enemyList.Remove(enemy);
-        Destroy(enemy.gameObject);
+        ObjectPool.Instance.ReturnToPool("Monster", enemy.gameObject);
     }
 }

@@ -30,6 +30,11 @@ public class TakeDamageText : MonoBehaviour
         transform.position += Vector3.up * yOffset;
     }
 
+    private void OnDisable()
+    {
+        ObjectPool.Instance.ReturnToPool("DamageText", gameObject);
+    }
+
     public void SetText(int damage)
     {
         StartCoroutine(Co_DamageTMP(damage));
