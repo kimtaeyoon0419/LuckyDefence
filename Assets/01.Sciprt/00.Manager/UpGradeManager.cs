@@ -4,37 +4,64 @@ using UnityEngine;
 
 public class UpGradeManager : MonoBehaviour
 {
+    public static UpGradeManager Instance;
+
     [Header("AttackPower")]
-    [SerializeField] private float attackLevel;
+    [SerializeField] private int attackLevel;
     public float AttackLevel => attackLevel;
     public float attackMultiplierPerLevel;
-    public float attackLevelUpCost;
+    public int attackLevelUpCost;
 
     [Header("AttackSpeed")]
-    [SerializeField] private float attackSpeedLevel;
+    [SerializeField] private int attackSpeedLevel;
     public float AttackSpeedLevel => attackSpeedLevel;
     public float attackSpeedMultiplierPerLevel;
-    public float attackSpeedLevelUpCost;
+    public int attackSpeedLevelUpCost;
 
     [Header("GetMoney")]
-    [SerializeField] private float getMoneyLevel;
+    [SerializeField] private int getMoneyLevel;
     public float GetMoneyLevel => getMoneyLevel;
     public float getMoneyMultiplierPerLevel;
-    public float getMoneyLevelUpCost;
+    public int getMoneyLevelUpCost;
+
+    private void Awake()
+    {
+        if(Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     #region UpGrade
     public void UpGradeAttackPower()
     {
+        if (GoodsManager.Instance.UseGold(attackLevelUpCost).Item1 == false)
+        {
+            return;
+        }
         attackLevel++;
     }
 
     public void UpGradeAttackSpeed()
     {
+        if (GoodsManager.Instance.UseGold(attackSpeedLevelUpCost).Item1 == false)
+        {
+            return;
+        }
         attackSpeedLevel++;
     }
 
     public void UpGradeGetMoneyLevel()
     {
+        if (GoodsManager.Instance.UseGold(getMoneyLevelUpCost).Item1 == false)
+        {
+            return;
+        }
         getMoneyLevel++;
     }
     #endregion

@@ -44,7 +44,7 @@ public class Bullet : MonoBehaviour
                 break;
             }
         }
-        target.TakeDamage(attackDamage);
+        target.TakeDamage(UpGradeManager.Instance.CalcAttackPower(attackDamage));
         Die();
     }
     

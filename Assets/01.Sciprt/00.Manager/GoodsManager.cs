@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GoodsManager : MonoBehaviour
 {
     public static GoodsManager Instance;
 
-    [SerializeField] private int gold;
+    [SerializeField] private float gold;
+    [SerializeField] private TextMeshProUGUI goldText;
+
 
     [SerializeField] private int sp;
 
@@ -23,9 +26,14 @@ public class GoodsManager : MonoBehaviour
         }
     }
 
-    public void GetGold(int gold)
+    private void Update()
     {
-        this.gold += gold;
+        goldText.text = "현재 골드량 : " + gold;
+    }
+
+    public void GetGold(float gold)
+    {
+        this.gold += UpGradeManager.Instance.CalcGetMoney(gold);
     }
 
     public void GetSp(int sp)
@@ -33,7 +41,12 @@ public class GoodsManager : MonoBehaviour
         this.sp += sp;
     }
 
-    public (bool, int? value) UseGold(int gold)
+    /// <summary>
+    /// 골드 사용 함수 / 골드가 충족 = true / 골드가 부족 = false
+    /// </summary>
+    /// <param name="gold">사용할 골드의 양</param>
+    /// <returns></returns>
+    public (bool, float? value) UseGold(float gold)
     {
         if (this.gold < gold)
         {

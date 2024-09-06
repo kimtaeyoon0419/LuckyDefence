@@ -25,6 +25,8 @@ public class Monster : MonoBehaviour
 
     [SerializeField] private bool isDie = false;
 
+    [SerializeField] private float dropGold;
+
     [Header("Animation")]
     private Animator animator;
     private readonly int hashMove = Animator.StringToHash("IsMove");
@@ -47,6 +49,7 @@ public class Monster : MonoBehaviour
 
     private void OnDisable()
     {
+        GoodsManager.Instance.GetGold(dropGold);
         StageManager.Instance.MonsterCountMinus();
     }
 

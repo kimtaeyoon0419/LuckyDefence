@@ -206,6 +206,8 @@ MonoBehaviour:
   stoppingDistance: 0.05
   canvas: {fileID: 0}
   spawnOrder: 0
+  isDie: 0
+  dropGold: 2
 --- !u!61 &4538722043465996667
 BoxCollider2D:
   m_ObjectHideFlags: 0
