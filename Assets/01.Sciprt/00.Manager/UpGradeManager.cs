@@ -1,32 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class UpGradeManager : MonoBehaviour
 {
     public static UpGradeManager Instance;
 
-    [Header("AttackPower")]
-    [SerializeField] private int attackLevel;
-    public float AttackLevel => attackLevel;
-    public float attackMultiplierPerLevel;
-    public int attackLevelUpCost;
-
-    [Header("AttackSpeed")]
-    [SerializeField] private int attackSpeedLevel;
-    public float AttackSpeedLevel => attackSpeedLevel;
-    public float attackSpeedMultiplierPerLevel;
-    public int attackSpeedLevelUpCost;
-
-    [Header("GetMoney")]
-    [SerializeField] private int getMoneyLevel;
-    public float GetMoneyLevel => getMoneyLevel;
-    public float getMoneyMultiplierPerLevel;
-    public int getMoneyLevelUpCost;
+    // 업그레이드 항목 리스트
+    [SerializeField] private List<UpGradeStat> upGradeStats;
 
     private void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
@@ -37,59 +23,47 @@ public class UpGradeManager : MonoBehaviour
         }
     }
 
-    #region UpGrade
-    public void UpGradeAttackPower()
+    // 업그레이드 메서드
+    public void UpGradeStat(string statName)
     {
-        if (GoodsManager.Instance.UseGold(attackLevelUpCost).Item1 == false)
+        UpGradeStat stat = upGradeStats.Find(s => s.statName == statName);
+        if (stat == null) return;
+
+        if (!GoodsManager.Instance.UseGold(stat.upgradeCost).Item1)
         {
             return;
         }
-        attackLevel++;
+
+        stat.level++;  // 레벨 증가
+        stat.UpdateUI(); // UI 업데이트
     }
 
-    public void UpGradeAttackSpeed()
+    #region Calc Methods
+    public float CalcStat(string statName, float baseValue)
     {
-        if (GoodsManager.Instance.UseGold(attackSpeedLevelUpCost).Item1 == false)
-        {
-            return;
-        }
-        attackSpeedLevel++;
-    }
+        UpGradeStat stat = upGradeStats.Find(s => s.statName == statName);
+        if (stat == null) return baseValue;
 
-    public void UpGradeGetMoneyLevel()
-    {
-        if (GoodsManager.Instance.UseGold(getMoneyLevelUpCost).Item1 == false)
-        {
-            return;
-        }
-        getMoneyLevel++;
+        return baseValue * (1 + stat.level * stat.multiplierPerLevel);
     }
     #endregion
+}
 
-    #region Calc
-    /// <summary>
-    /// 레벨 비례 공격력 계산
-    /// </summary>
-    /// <param name="attackPower">유닛의 공격력</param>
-    /// <returns></returns>
-    public float CalcAttackPower(float attackPower)
-    {
-        return attackPower * (1 + attackLevel * attackMultiplierPerLevel);
-    }
+// 직렬화를 위해 System.Serializable 어트리뷰트 추가
+[System.Serializable]
+public class UpGradeStat
+{
+    public string statName;  // 스탯 이름
+    public int level;
+    public float multiplierPerLevel;
+    public int upgradeCost;
+    public TextMeshProUGUI levelText;
+    public TextMeshProUGUI upgradeCostText;
 
-    /// <summary>
-    /// 레벨 비례 공격속도 계산
-    /// </summary>
-    /// <param name="attackSpeed">유닛의 공격속도</param>
-    /// <returns></returns>
-    public float CalcAttackSpeed(float attackSpeed)
+    // UI 업데이트 메서드
+    public void UpdateUI()
     {
-        return attackSpeed * (1 + attackSpeedLevel * attackSpeedMultiplierPerLevel);
+        if (levelText != null) levelText.text = $"Lv. {level}";
+        if (upgradeCostText != null) upgradeCostText.text = $"{upgradeCost}";
     }
-
-    public float CalcGetMoney(float getMoney)
-    {
-        return getMoney * (1 + getMoneyLevel * getMoneyMultiplierPerLevel);
-    }
-    #endregion
 }

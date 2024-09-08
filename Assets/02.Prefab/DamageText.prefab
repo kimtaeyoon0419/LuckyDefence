@@ -155,4 +155,4 @@ MonoBehaviour:
   alpha: {r: 1, g: 1, b: 1, a: 1}
   alphaSpeed: 1.5
   destroyTime: 0.5
-  currentDestoryTime: 0.20617518
+  currentDestoryTime: 0

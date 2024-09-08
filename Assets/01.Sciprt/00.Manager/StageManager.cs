@@ -43,7 +43,7 @@ public class StageManager : MonoBehaviour
         }
         else if(curStageTime <= 0)
         {
-            MonsterSpawnManager.Instance.StartSpawnMonster(1);
+            MonsterSpawnManager.Instance.StartSpawnMonster(20);
             curStageTime = stageTime;
             currentStage++;
             currentStageText.text = "현재 스테이지 : " + currentStage;

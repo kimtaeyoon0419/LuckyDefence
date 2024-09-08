@@ -9,14 +9,14 @@ public class Bullet : MonoBehaviour
 {
     public float speed = 10f;
     private Monster target;
-    [SerializeField] public float attackDamage;
+    [SerializeField] public float attackPower;
 
    
 
     public void SetupBullet(Monster target, float attackDamage)
     {
         this.target = target;
-        this.attackDamage = attackDamage;
+        this.attackPower = attackDamage;
 
         StartCoroutine(Co_Attack());
     }
@@ -44,7 +44,7 @@ public class Bullet : MonoBehaviour
                 break;
             }
         }
-        target.TakeDamage(UpGradeManager.Instance.CalcAttackPower(attackDamage));
+        target.TakeDamage(UpGradeManager.Instance.CalcStat("AttackPower", attackPower));
         Die();
     }
     

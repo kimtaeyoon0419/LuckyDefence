@@ -22,7 +22,7 @@ namespace LuckyDefence.Unit
                 animator.ResetTrigger(hashAttack);
                 animator.SetTrigger(hashAttack);
                 var unitBulltetObject = ObjectPool.Instance.SpawnFromPool("UnitBullet", transform.position);
-                unitBulltetObject.GetComponent<Bullet>().SetupBullet(targetMonster, attackDamage);
+                unitBulltetObject.GetComponent<Bullet>().SetupBullet(targetMonster, UpGradeManager.Instance.CalcStat("AttackPower", attackPower));
             }
         }
     }

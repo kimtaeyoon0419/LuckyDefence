@@ -26,19 +26,25 @@ public class TakeDamageText : MonoBehaviour
         takeDamageText = GetComponent<TextMeshProUGUI>();
         currentDestoryTime = destroyTime;
         alpha.a = 1f; // 알파 값을 1로 초기화
-        Debug.Log("텍스트 소환");
         transform.position += Vector3.up * yOffset;
+        StartCoroutine(Co_WaitReturnPoolTime(destroyTime));
     }
 
     private void OnDisable()
     {
-        ObjectPool.Instance.ReturnToPool("DamageText", gameObject);
+        StopAllCoroutines();
     }
 
     public void SetText(int damage)
     {
         StartCoroutine(Co_DamageTMP(damage));
         takeDamageText.text = damage.ToString();
+    }
+
+    IEnumerator Co_WaitReturnPoolTime(float time)
+    {
+        yield return new WaitForSeconds(time);
+        ObjectPool.Instance.ReturnToPool("DamageText", gameObject);
     }
 
     IEnumerator Co_DamageTMP(int damageAmount)

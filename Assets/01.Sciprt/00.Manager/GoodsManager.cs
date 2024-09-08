@@ -33,7 +33,7 @@ public class GoodsManager : MonoBehaviour
 
     public void GetGold(float gold)
     {
-        this.gold += UpGradeManager.Instance.CalcGetMoney(gold);
+        this.gold += UpGradeManager.Instance.CalcStat("GetMoney", gold);
     }
 
     public void GetSp(int sp)

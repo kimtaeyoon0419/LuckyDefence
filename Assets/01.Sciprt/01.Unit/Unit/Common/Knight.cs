@@ -11,6 +11,7 @@ namespace LuckyDefence.Unit
         protected override void Attack()
         {
             base.Attack();
+            //Debug.Log($"기사의 공격력 : {UpGradeManager.Instance.CalcAttackPower(attackDamage)}");
             AudioManager.Instance.StartSfx("Sword");
         }
     }

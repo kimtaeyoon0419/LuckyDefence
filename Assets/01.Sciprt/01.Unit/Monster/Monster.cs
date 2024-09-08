@@ -111,16 +111,19 @@ public class Monster : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        if(currentHp <= 0 ) return;
+        if (currentHp <= 0 || isDie) return;
 
         currentHp -= damage;
 
         TakeDamageText takeDamageText = ObjectPool.Instance.SpawnFromPool("DamageText", transform.position).GetComponent<TakeDamageText>();
-        takeDamageText.gameObject.transform.SetParent(canvas.transform);
+        if (canvas.gameObject.activeInHierarchy)
+        {
+            takeDamageText.gameObject.transform.SetParent(canvas.transform);
+        }
+
         takeDamageText.SetText(Mathf.FloorToInt(damage));
         if (currentHp <= 0 && !isDie)
         {
-            UnitSlotManager.Instance.GetSp(5);
             Die();
         }
     }
@@ -130,6 +133,8 @@ public class Monster : MonoBehaviour
         isDie = true;
         animator.SetBool(hashMove, false);
         StartCoroutine(Co_Die());
+        UnitSlotManager.Instance.GetSp(5);
+        GoodsManager.Instance.GetGold(10);
         //spawnManager.DestroyEnemy(this);
     }
 

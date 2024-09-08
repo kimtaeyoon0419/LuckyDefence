@@ -17,7 +17,7 @@ namespace LuckyDefence.Unit
         [Header("Stat")]
         [SerializeField] protected string unitName;
         [SerializeField] protected Stat statData;
-        protected float attackDamage;
+        protected float attackPower;
         protected float attackSpeed;
         protected float currentAttackSpeed;
         protected float attackRange;
@@ -58,7 +58,7 @@ namespace LuckyDefence.Unit
         protected void InitStat()
         {
             unitName = statData.unitName;
-            attackDamage = statData.damage;
+            attackPower = statData.damage;
             attackSpeed = statData.attackSpeed;
             attackRange = statData.attackRange;
             moveSpeed = statData.moveSpeed;

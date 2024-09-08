@@ -34,7 +34,7 @@ namespace LuckyDefence.Unit
                 Collider2D[] col = Physics2D.OverlapBoxAll(attackPos.transform.position, attackBoxSize, 0);
                 foreach(Collider2D col2d in col)
                 {
-                    col2d.GetComponent<Monster>()?.TakeDamage(attackDamage);
+                    col2d.GetComponent<Monster>()?.TakeDamage(UpGradeManager.Instance.CalcStat("AttackPower", attackPower));
                 }
             }
         }
