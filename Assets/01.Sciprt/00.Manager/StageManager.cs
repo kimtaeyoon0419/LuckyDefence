@@ -1,4 +1,5 @@
 // # System
+using EasyTransition;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -24,6 +25,15 @@ public class StageManager : MonoBehaviour
     [SerializeField] private float curStageTime = 0;
     [SerializeField] private TextMeshProUGUI stageTimeText;
 
+    [Header("GAME OVER")]
+    private bool isGameOver;
+    [SerializeField] private GameObject gameOverPaenl;
+    [SerializeField] private TextMeshProUGUI stageText;
+    [SerializeField] private TextMeshProUGUI stageCountText;
+    [SerializeField] private TextMeshProUGUI touchToReturnTiteText;
+    [SerializeField] private TransitionSettings transitionSettings;
+
+
     private void Awake()
     {
         Instance = this;
@@ -36,17 +46,24 @@ public class StageManager : MonoBehaviour
 
     private void Update()
     {
-        if(curStageTime > 0)
+        if(curStageTime > 0 && !isGameOver)
         {
             curStageTime -= Time.deltaTime;
             stageTimeText.text = "00 : " + Mathf.FloorToInt(curStageTime).ToString("D2");
         }
-        else if(curStageTime <= 0)
+        else if(curStageTime <= 0 && !isGameOver)
         {
             MonsterSpawnManager.Instance.StartSpawnMonster(20);
             curStageTime = stageTime;
             currentStage++;
             currentStageText.text = "현재 스테이지 : " + currentStage;
+        }
+
+        if(monsterCount >= maxMonsterCount && !isGameOver)
+        {
+            isGameOver = true;
+            gameOverPaenl.SetActive(true);
+            StartCoroutine(Co_GameOver());
         }
     }
 
@@ -66,5 +83,31 @@ public class StageManager : MonoBehaviour
         }
 
         monsterCountText.text = "몬스터 수 : " + monsterCount + " / " + maxMonsterCount;
+    }
+
+    IEnumerator Co_GameOver()
+    {
+        gameOverPaenl.SetActive(true);
+        yield return new WaitForSeconds(1f);
+        stageText.gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.5f);
+        stageCountText.gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.3f);
+        for(int i = 0; i < currentStage; i++)
+        {
+            stageCountText.text = currentStage.ToString();
+            yield return new WaitForSeconds(0.2f);
+        }
+        yield return new WaitForSeconds(0.5f);
+        touchToReturnTiteText.gameObject.SetActive(true);
+
+        while(true)
+        {
+            if (Input.GetMouseButton(0))
+            {
+                TransitionManager.Instance().Transition("Title", transitionSettings, 0);
+            }
+            yield return null;
+        }
     }
 }
