@@ -18,7 +18,7 @@ public class StageManager : MonoBehaviour
     [Header("MonsterCount")]
     [SerializeField] private int monsterCount;
     [SerializeField] private TextMeshProUGUI monsterCountText;
-    [SerializeField] private int maxMonsterCount;
+    [SerializeField] public float maxMonsterCount;
  
     [Header("StageTime")]
     [SerializeField] private float stageTime;
@@ -57,6 +57,7 @@ public class StageManager : MonoBehaviour
             curStageTime = stageTime;
             currentStage++;
             currentStageText.text = "현재 스테이지 : " + currentStage;
+
         }
 
         if(monsterCount >= maxMonsterCount && !isGameOver)
@@ -65,12 +66,18 @@ public class StageManager : MonoBehaviour
             gameOverPaenl.SetActive(true);
             StartCoroutine(Co_GameOver());
         }
+
+        monsterCountText.text = "몬스터 수 : " + monsterCount + " / " + maxMonsterCount;
+    }
+
+    public void UpDateMaxMonsterCount(float value)
+    {
+        maxMonsterCount = value;
     }
 
     public void MonsterCountPlus()
     {
         monsterCount++;
-        monsterCountText.text = "몬스터 수 : " + monsterCount + " / " + maxMonsterCount;
     }
 
     public void MonsterCountMinus()
@@ -82,7 +89,6 @@ public class StageManager : MonoBehaviour
             monsterCount = 0;
         }
 
-        monsterCountText.text = "몬스터 수 : " + monsterCount + " / " + maxMonsterCount;
     }
 
     IEnumerator Co_GameOver()

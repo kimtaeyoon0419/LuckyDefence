@@ -20,6 +20,7 @@ namespace LuckyDefence.Unit
         protected float attackPower;
         protected float attackSpeed;
         protected float currentAttackSpeed;
+        private float defaultAttackSpeed;
         protected float attackRange;
         protected float moveSpeed;
 
@@ -61,6 +62,7 @@ namespace LuckyDefence.Unit
             attackPower = statData.damage;
             attackSpeed = statData.attackSpeed;
             attackRange = statData.attackRange;
+            defaultAttackSpeed = attackSpeed;
             moveSpeed = statData.moveSpeed;
         }
 
@@ -70,6 +72,10 @@ namespace LuckyDefence.Unit
             {
                 if (currentEnemy != null && !isMove)
                 {
+                    if (defaultAttackSpeed != UpGradeManager.Instance.CalcStat("AttackSpeed", defaultAttackSpeed))
+                    {
+                        attackSpeed = UpGradeManager.Instance.CalcStat("AttackSpeed", defaultAttackSpeed);
+                    }
                     currentAttackSpeed = attackSpeed;
                     Attack();
                 }

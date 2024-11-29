@@ -23,7 +23,10 @@ public class UpGradeManager : MonoBehaviour
         }
     }
 
-    // 업그레이드 메서드
+    /// <summary>
+    /// 업그레이드 함수
+    /// </summary>
+    /// <param name="statName">업그레이드할 스탯의 이름</param>
     public void UpGradeStat(string statName)
     {
         UpGradeStat stat = upGradeStats.Find(s => s.statName == statName);
@@ -36,15 +39,34 @@ public class UpGradeManager : MonoBehaviour
 
         stat.level++;  // 레벨 증가
         stat.UpdateUI(); // UI 업데이트
+
+        if(statName == "MaxMonsterCount")
+        {
+            StageManager.Instance.UpDateMaxMonsterCount(CalcMaxMonsterCountStat(StageManager.Instance.maxMonsterCount));
+        }
     }
 
     #region Calc Methods
+    /// <summary>
+    /// 스탯의 배율을 계산해주는 함수
+    /// </summary>
+    /// <param name="statName">사용할 스탯 이름</param>
+    /// <param name="baseValue">기초 값</param>
+    /// <returns></returns>
     public float CalcStat(string statName, float baseValue)
     {
         UpGradeStat stat = upGradeStats.Find(s => s.statName == statName);
         if (stat == null) return baseValue;
 
         return baseValue * (1 + stat.level * stat.multiplierPerLevel);
+    }
+
+    public float CalcMaxMonsterCountStat(float baseValue)
+    {
+        UpGradeStat stat = upGradeStats.Find(s => s.statName == "MaxMonsterCount");
+        if (stat == null) return baseValue;
+
+        return baseValue +  10;
     }
     #endregion
 }
@@ -64,6 +86,6 @@ public class UpGradeStat
     public void UpdateUI()
     {
         if (levelText != null) levelText.text = $"Lv. {level}";
-        if (upgradeCostText != null) upgradeCostText.text = $"{upgradeCost}";
+        if (upgradeCostText != null) upgradeCostText.text = $"{upgradeCost} 원";
     }
 }
