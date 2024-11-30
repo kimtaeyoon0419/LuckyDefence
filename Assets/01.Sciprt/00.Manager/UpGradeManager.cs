@@ -34,6 +34,7 @@ public class UpGradeManager : MonoBehaviour
 
         if (!GoodsManager.Instance.UseGold(stat.upgradeCost).Item1)
         {
+            StartCoroutine(Co_LowMoneyText(stat.upgradeCostText));
             return;
         }
 
@@ -58,8 +59,18 @@ public class UpGradeManager : MonoBehaviour
         UpGradeStat stat = upGradeStats.Find(s => s.statName == statName);
         if (stat == null) return baseValue;
 
-        return baseValue * (1 + stat.level * stat.multiplierPerLevel);
+        if (statName == "AttackSpeed")
+        {
+            // 공격 속도는 레벨이 올라갈수록 감소 (더 빠르게 공격)
+            return baseValue / (1 + stat.level * stat.multiplierPerLevel);
+        }
+        else
+        {
+            // 기본 계산 방식 (스탯 증가)
+            return baseValue * (1 + stat.level * stat.multiplierPerLevel);
+        }
     }
+
 
     public float CalcMaxMonsterCountStat(float baseValue)
     {
@@ -69,6 +80,14 @@ public class UpGradeManager : MonoBehaviour
         return baseValue +  10;
     }
     #endregion
+
+    IEnumerator Co_LowMoneyText(TextMeshProUGUI upText)
+    {
+        string textData = upText.text;
+        upText.text = "돈이 부족합니다.";
+        yield return new WaitForSeconds(0.2f);
+        upText.text = textData;
+    }
 }
 
 // 직렬화를 위해 System.Serializable 어트리뷰트 추가
