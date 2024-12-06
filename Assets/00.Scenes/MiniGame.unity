@@ -348,6 +348,9 @@ MonoBehaviour:
   currentSelectIcon: []
   btnPrefab: {fileID: 607485970763808625, guid: 8b5ded428380c044f9ec9417ebba614b, type: 3}
   gridLayOutGroub: {fileID: 1225559973}
+  timeText: {fileID: 1688229691}
+  startTime: 30
+  currentTime: 0
 --- !u!1 &1225559973
 GameObject:
   m_ObjectHideFlags: 0

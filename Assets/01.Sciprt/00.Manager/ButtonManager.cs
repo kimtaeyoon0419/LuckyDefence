@@ -2,6 +2,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+
 
 // # Unity
 using UnityEngine;
@@ -19,9 +21,32 @@ public class ButtonManager : MonoBehaviour
 {
     [SerializeField] private List<Button> buttonList;
 
+    [Header("MiniGame")]
+    [SerializeField] private GameObject miniGamePanel;
+    [SerializeField] private float StartminiGameCoolTime;
+    [SerializeField] private float currentMiniGameCoolTime;
+    [SerializeField] private GameObject coolPanel;
+    [SerializeField] private TextMeshProUGUI miniGameCoolText;
+
     private void Start()
     {
         SetButton("UnitSpawn");
+    }
+
+    private void Update()
+    {
+        if(currentMiniGameCoolTime > 0)
+        {
+            if(!coolPanel.activeSelf)   coolPanel.SetActive(true);
+            currentMiniGameCoolTime -= Time.deltaTime;
+            miniGameCoolText.text = Mathf.FloorToInt(currentMiniGameCoolTime).ToString();
+        }
+        else if(currentMiniGameCoolTime <= 0)
+        {
+            if (coolPanel.activeSelf) coolPanel.SetActive(false);
+            currentMiniGameCoolTime = 0;
+            miniGameCoolText.text = Mathf.FloorToInt(currentMiniGameCoolTime).ToString();
+        }
     }
 
     public void SetButton(string buttonName)
@@ -39,5 +64,12 @@ public class ButtonManager : MonoBehaviour
                 button.page.SetActive(true);
             }
         }
+    }
+
+    public void StartMiniGame()
+    {
+        if(currentMiniGameCoolTime > 0) return;
+        miniGamePanel.SetActive(true);
+        currentMiniGameCoolTime = StartminiGameCoolTime;
     }
 }
