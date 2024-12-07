@@ -1721,7 +1721,7 @@ MonoBehaviour:
     blackColor: {fileID: 2103592623}
     page: {fileID: 204821274}
   miniGamePanel: {fileID: 2079417046}
-  StartminiGameCoolTime: 0
+  StartminiGameCoolTime: 120
   currentMiniGameCoolTime: 0
   coolPanel: {fileID: 1288000584}
   miniGameCoolText: {fileID: 164332473}
