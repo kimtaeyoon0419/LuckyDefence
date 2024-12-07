@@ -26,12 +26,14 @@ public class IconInfo
 public class MiniGameManager : MonoBehaviour
 {
     [Header("UI")]
+    [SerializeField] private GameObject miniGameCanvas;
     [SerializeField] private List<Icon> iconList = new List<Icon>();
     private List<Icon> iconListCopy = new List<Icon>(); // 복사본
     [SerializeField] private List<IconInfo> iconInfos = new List<IconInfo>();
     [SerializeField] private List<IconInfo> currentSelectIcon = new List<IconInfo>();
     [SerializeField] private GameObject btnPrefab;
     [SerializeField] private GameObject gridLayOutGroub;
+    [SerializeField] private TextMeshProUGUI countText;
 
     [Header("Time")]
     [SerializeField] private TextMeshProUGUI timeText;
@@ -41,10 +43,17 @@ public class MiniGameManager : MonoBehaviour
     [Header("Transition")]
     [SerializeField] private TransitionSettings transitionSettings;
 
+    [Header("Count")]
+    [SerializeField] private int completeCount = 0;
+
+    private bool isProcessing = false; // 선택 중인지 확인하는 플래그
+
     private void OnEnable()
     {
         // 타이머 초기화
         currentTime = startTime;
+        completeCount = 0;
+        countText.text = completeCount.ToString() + "개를 찾았습니다!";
 
         // 기존 아이콘 버튼 제거
         foreach (var icon in iconInfos)
@@ -118,7 +127,12 @@ public class MiniGameManager : MonoBehaviour
 
     public void SelectIcon(int index)
     {
+        if (isProcessing) return; // 현재 처리 중이면 입력 막기
+
         IconInfo selectedIcon = iconInfos[index];
+
+        // 이미 선택된 아이콘인지 확인
+        if (currentSelectIcon.Contains(selectedIcon)) return;
 
         if (selectedIcon.iconBtn.GetComponent<MiniGameBtn>().isComplete) return;
 
@@ -138,6 +152,7 @@ public class MiniGameManager : MonoBehaviour
 
     private IEnumerator CheckIconsWithDelay()
     {
+        isProcessing = true; // 선택 처리 시작
         foreach (IconInfo icon in currentSelectIcon)
         {
             icon.iconBlack.GetComponentInParent<UnityEngine.UI.Button>().interactable = false;
@@ -156,6 +171,8 @@ public class MiniGameManager : MonoBehaviour
         else
         {
             Debug.Log("매칭 성공!");
+            completeCount++;
+            countText.text = completeCount.ToString() + "개를 찾았습니다!";
             foreach (IconInfo curIcon in currentSelectIcon)
             {
                 curIcon.iconBtn.GetComponent<MiniGameBtn>().isComplete = true;
@@ -168,6 +185,8 @@ public class MiniGameManager : MonoBehaviour
         {
             icon.iconBlack.GetComponentInParent<UnityEngine.UI.Button>().interactable = true;
         }
+
+        isProcessing = false; // 처리 완료
     }
 
     private IEnumerator FadeInBlackPanel(GameObject blackPanel)
@@ -203,7 +222,8 @@ public class MiniGameManager : MonoBehaviour
             if (TransitionManager.Instance() != null)
             {
                 //TransitionManager.Instance().Transition("StageScene", transitionSettings, 0);
-                gameObject.SetActive(false);
+                GoodsManager.Instance.GetGold(10 * completeCount);
+                miniGameCanvas.SetActive(false);
             }
         }
     }
