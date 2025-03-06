@@ -48,6 +48,9 @@ public class MiniGameManager : MonoBehaviour
 
     private bool isProcessing = false; // 선택 중인지 확인하는 플래그
 
+    [Header("ResultText")]
+    [SerializeField] private GameObject resultText;
+
     private void OnEnable()
     {
         // 타이머 초기화
@@ -221,8 +224,8 @@ public class MiniGameManager : MonoBehaviour
         {
             if (TransitionManager.Instance() != null)
             {
-                //TransitionManager.Instance().Transition("StageScene", transitionSettings, 0);
                 GoodsManager.Instance.GetGold(10 * completeCount);
+                resultText.GetComponent<MiniGameResultText>().SetText(completeCount, UpGradeManager.Instance.CalcStat("GetMoney", (float)(10 * completeCount)));
                 miniGameCanvas.SetActive(false);
             }
         }
